@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍞 面包配方计算器</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="hero">
+            <h1>🍞 面包配方计算器</h1>
+            <p class="subtitle">输入面粉规格、含水率和附加材料，自动计算每种材料的克重</p>
+        </header>
+
+        <main>
+            <!-- 1. 面粉配比区 -->
+            <section class="card" id="flour-section">
+                <div class="card-header">
+                    <span class="step-badge">1</span>
+                    <h2>面粉配比</h2>
+                </div>
+                <p class="card-hint">添加不同蛋白质含量的面粉，设定目标蛋白质含量，自动计算各面粉所需质量</p>
+
+                <div class="flour-base">
+                    <div class="field">
+                        <label for="flour-total">总面粉重量 (g)</label>
+                        <input type="number" id="flour-total" value="500" min="1" step="10">
+                    </div>
+                    <div class="field">
+                        <label for="target-protein">目标蛋白质含量 (%)</label>
+                        <input type="number" id="target-protein" value="12.5" min="0" max="50" step="0.1">
+                    </div>
+                </div>
+
+                <div class="flour-list" id="flour-list">
+                    <!-- 动态生成 -->
+                </div>
+
+                <button class="btn-add" id="add-flour">+ 添加面粉</button>
+
+                <div class="quick-templates">
+                    <span class="quick-label">快捷配方：</span>
+                    <button class="btn-template" data-template="bread">吐司面包</button>
+                    <button class="btn-template" data-template="baguette">法棍</button>
+                    <button class="btn-template" data-template="wholewheat">全麦吐司</button>
+                    <button class="btn-template" data-template="cake">蛋糕</button>
+                </div>
+            </section>
+
+            <!-- 2. 含水量 / 液体区 -->
+            <section class="card" id="hydration-section">
+                <div class="card-header">
+                    <span class="step-badge">2</span>
+                    <h2>含水量 & 液体选择</h2>
+                </div>
+                <p class="card-hint">输入含水率（占面粉百分比），选择液体类型，系统按比例计算实际液体克重</p>
+
+                <div class="hydration-base">
+                    <div class="field">
+                        <label for="hydration">含水率 (% 占面粉)</label>
+                        <input type="number" id="hydration" value="65" min="0" max="200" step="0.5">
+                    </div>
+                    <div class="hydration-info">
+                        所需水分总量: <strong id="total-water-amount">325.0</strong> g
+                    </div>
+                </div>
+
+                <div class="liquid-list" id="liquid-list">
+                    <!-- 动态生成 -->
+                </div>
+
+                <button class="btn-add" id="add-liquid">+ 添加液体</button>
+
+                <div class="quick-templates">
+                    <span class="quick-label">常用液体：</span>
+                    <button class="btn-template" data-liquid="water">纯水</button>
+                    <button class="btn-template" data-liquid="milk">牛奶</button>
+                    <button class="btn-template" data-liquid="egg">全蛋液</button>
+                    <button class="btn-template" data-liquid="eggwhite">蛋清</button>
+                    <button class="btn-template" data-liquid="yogurt">酸奶</button>
+                </div>
+            </section>
+
+            <!-- 3. 含糖量 -->
+            <section class="card" id="sugar-section">
+                <div class="card-header">
+                    <span class="step-badge">3</span>
+                    <h2>含糖量</h2>
+                </div>
+                <p class="card-hint">输入含糖率（占面粉百分比），系统自动按比例算出每种糖的实际克重</p>
+
+                <div class="sugar-base">
+                    <div class="field">
+                        <label for="sugar-percent">含糖率 (% 占面粉)</label>
+                        <input type="number" id="sugar-percent" value="8" min="0" max="50" step="0.1">
+                    </div>
+                    <div class="sugar-info">
+                        所需糖质量总量: <strong id="total-sugar-amount">40.0</strong> g
+                    </div>
+                </div>
+
+                <div class="sugar-list" id="sugar-list">
+                    <!-- 动态生成 -->
+                </div>
+
+                <button class="btn-add" id="add-sugar">+ 添加糖类</button>
+
+                <div class="quick-templates">
+                    <span class="quick-label">常用糖类：</span>
+                    <button class="btn-template" data-sugar="white">细砂糖</button>
+                    <button class="btn-template" data-sugar="brown">红糖</button>
+                    <button class="btn-template" data-sugar="powder">糖粉</button>
+                    <button class="btn-template" data-sugar="honey">蜂蜜</button>
+                </div>
+            </section>
+
+            <!-- 4. 其他材料 -->
+            <section class="card" id="extras-section">
+                <div class="card-header">
+                    <span class="step-badge">4</span>
+                    <h2>附加材料</h2>
+                </div>
+                <p class="card-hint">添加黄油、盐、酵母等附加材料，按烘焙百分比自动换算</p>
+
+                <div class="extras-list" id="extras-list">
+                    <!-- 动态生成 -->
+                </div>
+
+                <button class="btn-add" id="add-extra">+ 添加材料</button>
+
+                <div class="quick-templates">
+                    <span class="quick-label">常用附加：</span>
+                    <button class="btn-template" data-extra="butter">黄油 5%</button>
+                    <button class="btn-template" data-extra="salt">盐 2%</button>
+                    <button class="btn-template" data-extra="yeast">酵母 1.5%</button>
+                    <button class="btn-template" data-extra="milkpowder">奶粉 4%</button>
+                </div>
+            </section>
+
+            <!-- 配方总览 -->
+            <section class="card summary-card">
+                <div class="card-header">
+                    <span class="step-badge summary-badge">📋</span>
+                    <h2>配方总览</h2>
+                </div>
+
+                <div class="summary-content" id="summary-content">
+                    <table class="summary-table">
+                        <thead>
+                            <tr>
+                                <th>材料</th>
+                                <th>占比 / 蛋白质</th>
+                                <th class="text-right">克重 (g)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="summary-body">
+                            <!-- 动态生成 -->
+                        </tbody>
+                        <tfoot>
+                            <tr class="total-row">
+                                <td colspan="2"><strong>总重量</strong></td>
+                                <td class="text-right"><strong id="grand-total">0.0 g</strong></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div class="actions">
+                    <button class="btn-action" id="copy-btn">📋 复制配方</button>
+                    <button class="btn-action primary" id="download-btn">🖼️ 下载配方图片</button>
+                    <button class="btn-action" id="reset-btn">🔄 重置</button>
+                    <button class="btn-action" id="scale-btn">⚖️ 按倍数缩放</button>
+                </div>
+
+                <div class="scale-panel" id="scale-panel" style="display:none;">
+                    <div class="field">
+                        <label for="scale-factor">缩放倍数</label>
+                        <input type="number" id="scale-factor" value="2" min="0.1" step="0.1">
+                    </div>
+                    <button class="btn-action primary" id="apply-scale">应用缩放</button>
+                    <button class="btn-action" id="cancel-scale">取消</button>
+                </div>
+
+                <div class="hydration-warning" id="hydration-warning" style="display:none;"></div>
+                <div class="protein-warning" id="protein-warning" style="display:none;"></div>
+            </section>
+        </main>
+
+        <footer>
+            <p>💡 提示：所有材料百分比均按"烘焙百分比"计算（以总面粉重量为 100% 基准）</p>
+            <p class="footer-tip">常见范围参考：含水率 60-75% · 糖 5-15% · 盐 1.8-2.2% · 酵母 1-2% · 黄油 3-10%</p>
+        </footer>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
